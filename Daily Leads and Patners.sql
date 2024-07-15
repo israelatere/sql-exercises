@@ -12,21 +12,28 @@ partner_id int
 select * from DailySales;
 insert into DailySales (date_id, make_name, lead_id, partner_id)
 values
-('2020-12-8', 'toyota', 0,1)
-('2020-12-8', 'toyota', 1,0)
-('2020-12-8', 'toyota', 1,2)
-(4, 'Bill', null)
-(5, 'Zack', 1),
-(6, 'Mark', 2);
-
-
---In SQL, id is the primary key column for this table.
---Each row of this table indicates the id of a customer, their name, and the id of the customer who referred them.
+('2020-12-8', 'toyota', 0,1),
+('2020-12-8', 'toyota', 1,0),
+('2020-12-7', 'toyota', 1,2),
+('2020-12-7', 'toyota', 0,2),
+('2020-12-8', 'honda', 1,2),
+('2020-12-8', 'honda', 0,1),
+('2020-12-7', 'honda', 1,2),
+('2020-12-7', 'honda', 2,1);
 
 --Exercise
---Find the names of the customer that are not referred by the customer with id = 2.
+--For each date_id and make_name, find the number of distinct lead_id's and distinct partner_id's.
 --Return the result table in any order.
 
-SELECT name FROM Customer
-WHERE referee_id is NULL
-OR referee_id = 1;
+SELECT 
+    date_id,
+    make_name,
+    COUNT(DISTINCT lead_id) AS unique_leads,
+    COUNT(DISTINCT partner_id) AS unique_partners
+FROM 
+    DailySales
+GROUP BY 
+    date_id,
+    make_name
+ORDER BY 
+    unique_partners;
